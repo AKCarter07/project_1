@@ -7,7 +7,6 @@ class ReimbDao:
     def __init__(self):
         pass
 
-#(self, amount, submitted, type, descrip, receipt, author)
 # Create
     def create_reimb(self, reimb_obj):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
@@ -18,7 +17,7 @@ class ReimbDao:
                             f"'{reimb_obj.type}', '{reimb_obj.descrip}', '{reimb_obj.receipt}', '{reimb_obj.author}', "
                             f"'{reimb_obj.status}');")
                 conn.commit()
-        return "this blows"
+        return f"Reimbursement for {reimb_obj.amount} for {reimb_obj.type} submitted."
 
 # Read
     def get_reimb(self, reimb_id):
@@ -63,9 +62,9 @@ class ReimbDao:
                     reimbs.append(reimb)
             return reimbs
 
-  
+
 # Update
-    def update_reimb(self, reimb_obj):
+    def update_reimb_status(self, reimb_obj):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
                              password="pass") as conn:
             with conn.cursor() as cur:
@@ -78,3 +77,10 @@ class ReimbDao:
 
 
 # Delete
+    def delete_reimb(self, reimb_id):
+        with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
+                             password="pass") as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"DELETE FROM ers_reimbursement WHERE reimb_id = '{reimb_id}';")
+                conn.commit()
+            return f"Reimbursement {reimb_id} has been deleted."
