@@ -21,6 +21,13 @@ class User:
             'role': self.role
         }
 
+    def __str__(self):
+        return f"User {self.username} ({self.user_id}): {self.fname} {self.lname}. {self.role}, {self.email}."
+
+    def update_password(self, new_pass):
+        self.password = new_pass
+
+
 
 
 
