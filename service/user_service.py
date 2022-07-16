@@ -19,7 +19,7 @@ class UserService():
             check = self.ud.check_password(username, password)
             print(check)
             if check:
-                return {'id': check[0], 'role': check[6]}
+                return {'id': check[0], 'role': check[6], 'first_name': check[3]}
             else:
                 raise InvalidParamError("Password incorrect")
         else:

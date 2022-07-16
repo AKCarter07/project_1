@@ -19,7 +19,7 @@ class ReimbService():
     def get_reimb(self, reimb_id):
         return self.rd.get_reimb()
 
-    def get_all_reimbs(self, user_id, filter_status, filter_type):
+    def get_all_reimbs(self, user_id, filter_status, filter_type, role):
         return self.rd.get_reimbs(user_id, filter_status, filter_type)
 
 
