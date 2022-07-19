@@ -8,65 +8,73 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Finance Manager Home</h1>
+    <h1 class="has-text-centered is-size-1">Finance Manager Home</h1>
     <h2 class="subtitle"></h2>
-    <button class="button" id="cookies">see cookies</button>
 
     <div class="section">
         <div class="container">
             <div class="dropdown" id="status-ddown">
                 <div class="dropdown-trigger">
-                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span>Status</span>
-                    <span class="icon is-small">
-                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  <button class="button pt-5 pb-5" aria-haspopup="true" aria-controls="dropdown-menu" id="stat-btn">
+                    <span>
+                        <p>Status</p>
+                        <p id="status-text">pending</p>
                     </span>
                   </button>
                 </div>
                 <div class="dropdown-menu" id="status-menu" role="menu">
                   <div class="dropdown-content">
-                    <a href="#" class="dropdown-item">
+                    <a class="dropdown-item" id="approved">
                       Approved
                     </a>
-                    <a class="dropdown-item">
+                    <a class="dropdown-item" id="denied">
                       Denied
                     </a>
-                    <a href="#" class="dropdown-item is-active">
+                    <a class="dropdown-item is-active" id="pending">
                       Pending
+                    </a>
+                    <a class="dropdown-item" id="all-statuses">
+                        All
                     </a>
                   </div>
                 </div>
               </div>
               <div class="dropdown" id="type-ddown">
                 <div class="dropdown-trigger">
-                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span>Type</span>
+                  <button class="button pt-5 pb-5" aria-haspopup="true" aria-controls="dropdown-menu" id="type-btn">
+                    <span>
+                        <p>Type</p>
+                        <p id="type-text">all-types</p>
+                    </span>
                     <span class="icon is-small">
                       <i class="fas fa-angle-down" aria-hidden="true"></i>
                     </span>
                   </button>
                 </div>
-                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-menu" id="type-menu" role="menu">
                   <div class="dropdown-content">
-                    <a href="#" class="dropdown-item">
+                    <a class="dropdown-item" id="food">
                       Food
                     </a>
-                    <a class="dropdown-item">
+                    <a class="dropdown-item" id="lodging">
                       Lodging
                     </a>
-                    <a href="#" class="dropdown-item is-active">
+                    <a class="dropdown-item" id="travel">
                       Travel
                     </a>
-                    <a href="#" class="dropdown-item">
+                    <a class="dropdown-item" id="other">
                       Other
+                    </a>
+                    <a class="dropdown-item is-active" id="all-types">
+                        All
                     </a>
                   </div>
                 </div>
               </div>
-              <button class="button" id="fetch-reimbs">Get Reimbursements</button>
-            <table id="reimbs-table">
+              <button class="button is-primary is-light pt-5 pb-5" id="fetch-reimbs">Get Reimbursements</button>
+            <table id="reimbs-table" class="table">
                 <thead>
-                    <tr>
+                    <tr class="has-text-centered">
                         <th>Status</th>
                         <th>R-Id</th>
                         <th>Amount</th>

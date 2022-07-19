@@ -10,24 +10,24 @@ rs = ReimbService()
 # As a finance manager, I want to be able to view and approve reimbursement requests
 
 @fmc.route('/fm/reimbursements')
-def get_all_reimbs_fm(): # remove me eventually!!! ------------------------------------------------
+def get_all_reimbs_fm():
     if "user" in session:
         print("in fmc /fm/reimbursements:: session: ", session)
-        #json_entry = request.get_json()
         status = request.args.get('filter-status')
-        type = request.args.get('filter-type')
-        if status == 'null' or status == 'None':
+        filter_type = request.args.get('filter-type')
+        if status == 'all-statuses':
             status = None
-        if type == 'null' or type == "None":
-            type = None
+        if filter_type == 'all-types':
+            filter_type = None
         try:
-            reimbs = rs.get_all_reimbs(None, status, type, session['user']['role'])
-            to_return = {}
+            reimbs = rs.get_all_reimbs(None, status, filter_type, session['user']['role'])
+            to_return = {"reimbs": []}
+
             for re in reimbs:
-                to_return.update({f"{re.get_id()}": f"{re.to_dict()}"})
+                to_return["reimbs"].append(re.to_dict())
 
             json_return = json.dumps(to_return)
-            json_return = json_return.replace("'",'')
+            # json_return = json_return.replace("'",'"')
             print("to_return from fmc : ", json_return)
             return json_return
         except InvalidParamError as e:

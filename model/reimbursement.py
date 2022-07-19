@@ -14,14 +14,13 @@ class Reimbursement:
     def to_dict(self):
         return {
             'reimb_id': self.reimb_id,
-            'amount': self.amount,
+            'amount': float(self.amount),
             'type': self.type,
             'description': self.descrip,
-            'receipt': self.receipt,
             'submitter_id': self.author,
             'status': self.status,
-            'date_submitted': self.submitted,
-            'date_resolved': self.resolved,
+            'date_submitted': str(self.submitted),
+            'date_resolved': str(self.resolved),
             'resolver_id': self.resolver
         }
 

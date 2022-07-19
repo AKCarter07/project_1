@@ -34,7 +34,7 @@ def login():
             }, 400
     else:
         if "user" in session:
-            return "already had cookie"
+            return "No more cookies for you."
             # if session['role'] == "employee":
             #     return redirect(url_for("ec.employee_home"))
             # elif session['role'] == "finance manager":
@@ -43,10 +43,13 @@ def login():
 
 @uc.route('/logout', methods=['POST'])
 def logout():
-    session.clear()
-    return {
-        "message": "Successfully logged out"
-    }, 200
+    try:
+        [session.pop(key) for key in list(session.keys())]
+        return {
+            "message": "Successfully logged out"
+        }, 200
+    except:
+        pass
 
 
 @uc.route('/home')

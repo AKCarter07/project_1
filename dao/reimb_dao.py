@@ -36,7 +36,7 @@ class ReimbDao:
     def get_reimbs(self, user_id, filter_status, filter_type):
         reimbs = []
         print("dao: user_id = ", type(user_id), ", filter-status = ", type(filter_status), " filter type = ", filter_type)
-        call = "SELECT * FROM ers_reimbursement"
+        call = "SELECT * FROM ers_reimbursement INNER JOIN ers_users on ers_reimbursement.reimb_author = ers_users.user_id"
         if not user_id is None or not filter_status is None or not filter_type is None:
             call = call + f" WHERE "
             if not user_id is None:
@@ -55,7 +55,7 @@ class ReimbDao:
             with conn.cursor() as cur:
                 cur.execute(call)
                 for line in cur:
-                    reimb = Reimbursement(line[1], line[2], line[5], line[6], line[7], line[8])
+                    reimb = Reimbursement(line[1], line[2], line[5], line[6], line[7], f"{line[13]} {line[14]}")
                     reimb.set_id(line[0])
                     reimb.set_status(line[4])
                     reimb.set_resolved(line[3])
