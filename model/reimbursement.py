@@ -13,16 +13,16 @@ class Reimbursement:
 
     def to_dict(self):
         return {
-            'reimbursement id': self.reimb_id,
+            'reimb_id': self.reimb_id,
             'amount': self.amount,
             'type': self.type,
             'description': self.descrip,
             'receipt': self.receipt,
-            'submitter id': self.author,
+            'submitter_id': self.author,
             'status': self.status,
-            'date submitted': self.submitted,
-            'date resolved': self.resolved,
-            'resolver id': self.resolver
+            'date_submitted': self.submitted,
+            'date_resolved': self.resolved,
+            'resolver_id': self.resolver
         }
 
     def set_id(self, id):
@@ -39,3 +39,6 @@ class Reimbursement:
     def set_resolver(self, resolver):
         self.resolver = resolver
         return f"Reimbursement {self.reimb_id} has been resolved by {self.resolver}."
+
+    def get_id(self):
+        return self.reimb_id

@@ -14,17 +14,17 @@ re = Reimbursement(12.50, now, "other", "trololol", "idgaf", 4)
 us = UserService()
 rs = ReimbService()
 
+#
+#
+# users = us.get_all_users()
+# for elem in users:
+#     print(elem)
 
-
-users = us.get_all_users()
-for elem in users:
-    print(elem)
-
-get_reimb = rs.get_all_reimbs(None, None, 'travel')
+get_reimb = rs.get_all_reimbs(None, None, None, 'finance_manager')
 for reimb in get_reimb:
-    print(reimb.to_dict())
+    print(reimb)
 
-print(us.check_password('bob45', 'babyz'))
+# print(us.check_password('bob45', 'babyz'))
 # print(us.check_password('bob45', 'baby'))
 # print(us.check_password('bob4', 'babyz'))
 

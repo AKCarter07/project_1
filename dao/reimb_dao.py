@@ -35,6 +35,7 @@ class ReimbDao:
 
     def get_reimbs(self, user_id, filter_status, filter_type):
         reimbs = []
+        print("dao: user_id = ", type(user_id), ", filter-status = ", type(filter_status), " filter type = ", filter_type)
         call = "SELECT * FROM ers_reimbursement"
         if not user_id is None or not filter_status is None or not filter_type is None:
             call = call + f" WHERE "
@@ -48,7 +49,7 @@ class ReimbDao:
                     call = call + " AND "
             if not filter_type is None:
                 call = call + f"reimb_type = '{filter_type}'"
-            call = call + ";"
+        call = call + ";"
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
                              password="pass") as conn:
             with conn.cursor() as cur:
@@ -59,8 +60,10 @@ class ReimbDao:
                     reimb.set_status(line[4])
                     reimb.set_resolved(line[3])
                     reimb.set_resolver(line[9])
+                    print("dao:", reimb)
                     reimbs.append(reimb)
-            return reimbs
+                print("in dao", reimbs)
+                return reimbs
 
 
 # Update

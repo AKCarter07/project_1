@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Finance Manager Home</h1>
+    <h2 class="subtitle"></h2>
+    <button class="button" id="cookies">see cookies</button>
+
+    <div class="section">
+        <div class="container">
+            <div class="dropdown" id="status-ddown">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Status</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="status-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                      Approved
+                    </a>
+                    <a class="dropdown-item">
+                      Denied
+                    </a>
+                    <a href="#" class="dropdown-item is-active">
+                      Pending
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="dropdown" id="type-ddown">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Type</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                      Food
+                    </a>
+                    <a class="dropdown-item">
+                      Lodging
+                    </a>
+                    <a href="#" class="dropdown-item is-active">
+                      Travel
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Other
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <button class="button" id="fetch-reimbs">Get Reimbursements</button>
+            <table id="reimbs-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>R-Id</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Submitted By</th>
+                        <th>Submitted On</th>
+                        <th>Receipt</th>
+                        <th>Resolved By</th>
+                        <th>Resolved On</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <button class="button" id="logout">Logout</button>
+    <script src="finance-manager-home.js"></script>
+</body>
+</html>

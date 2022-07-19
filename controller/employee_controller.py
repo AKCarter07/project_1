@@ -13,7 +13,7 @@ rs = ReimbService()
 # As an employee, I want to be able to submit and review my reimbursement requests
 
 @ec.route('/<username>/home')
-def get_user(username):
+def employee_home(username):
     return us.get_user_info(username)
 
 
@@ -33,15 +33,23 @@ def submit_reimb(username):
             'message': f"{e}"
         }, 400
 
-@ec.route('/<username>/reimbursements')
+@ec.route('/e/reimbursements')
 def get_all_reimbs_e():
     json_entry = request.get_json()
     if "user" in session:
         try:
-            rs.get_all_reimbs(session['user_id'], json_entry['filter_status'], json_entry['filter_type'], cookie['role'])
+            reimbs = rs.get_all_reimbs(session['user']['id'], json_entry['filter_status'], json_entry['filter_type'],
+                              session['user']['role'])
+            to_return = {}
+            for re in reimbs:
+                to_return.update({f"{re.get_id()}": f"{re.to_dict()}"})
+
+            print("to_return from ec : ", to_return)
+            return to_return
         except InvalidParamError as e:
             return {
                 'message': f"{e}"
             }, 400
     else:
-        return redirect(url_for(uc.login))
+        return redirect(url_for('uc.login'))
+
