@@ -4,6 +4,7 @@ from service.reimb_service import ReimbService
 from model.reimbursement import Reimbursement
 from model.user import User
 from exception.invalid_param import InvalidParamError
+from flask_cors import CORS
 
 uc = Blueprint('user_controller', __name__)
 us = UserService()
@@ -16,7 +17,8 @@ def blank():
 
 @uc.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
+    if request.method == 'POST' and "user" not in session:
+        print("method = POST")
         json_input = request.get_json()
         usn = json_input['username']
         pwd = json_input['password']
@@ -32,30 +34,22 @@ def login():
             return{
                 "message": f"{e}"
             }, 400
-    else:
-        if "user" in session:
-            return "No more cookies for you."
+    elif "user" in session:
+         return {
+             'message': "No more cookies for you."
+         }, 401
             # if session['role'] == "employee":
             #     return redirect(url_for("ec.employee_home"))
             # elif session['role'] == "finance manager":
             #     return redirect(url_for("fmc.finance_manager_home"))
-    return render_template("login.html")
+    else:
+        return render_template("login.html")
 
 @uc.route('/logout', methods=['POST'])
 def logout():
-    try:
-        [session.pop(key) for key in list(session.keys())]
-        return {
-            "message": "Successfully logged out"
-        }, 200
-    except:
-        pass
 
-
-@uc.route('/home')
-def home():
-    if "user" in session:
-        user = session ["user"]
-        return f"<h1>{user}</h1>"
-    else:
-        return session
+    [session.pop(key) for key in list(session.keys())]
+    print(session)
+    return {
+        'message': 'logout successful'
+    }, 201

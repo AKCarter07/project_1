@@ -35,21 +35,21 @@ class ReimbDao:
 
     def get_reimbs(self, user_id, filter_status, filter_type):
         reimbs = []
-        print("dao: user_id = ", type(user_id), ", filter-status = ", type(filter_status), " filter type = ", filter_type)
+       #print("dao: user_id = ", type(user_id), ", filter-status = ", type(filter_status), " filter type = ", filter_type)
         call = "SELECT * FROM ers_reimbursement INNER JOIN ers_users on ers_reimbursement.reimb_author = ers_users.user_id"
-        if not user_id is None or not filter_status is None or not filter_type is None:
+        if user_id or filter_status or filter_type:
             call = call + f" WHERE "
-            if not user_id is None:
+            if user_id:
                 call = call + f"reimb_author = '{user_id}'"
-                if not filter_status is None or not filter_type is None:
+                if filter_status or filter_type:
                     call = call + " AND "
-            if not filter_status is None:
+            if filter_status:
                 call = call + f"status = '{filter_status}'"
-                if not filter_type is None:
+                if filter_type:
                     call = call + " AND "
-            if not filter_type is None:
+            if filter_type:
                 call = call + f"reimb_type = '{filter_type}'"
-        call = call + ";"
+        call = call + " ORDER BY status DESC, submitted;"
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
                              password="pass") as conn:
             with conn.cursor() as cur:
@@ -60,22 +60,22 @@ class ReimbDao:
                     reimb.set_status(line[4])
                     reimb.set_resolved(line[3])
                     reimb.set_resolver(line[9])
-                    print("dao:", reimb)
+                    # print("dao:", reimb)
                     reimbs.append(reimb)
-                print("in dao", reimbs)
+                # print("in dao", reimbs)
                 return reimbs
 
 
 # Update
-    def update_reimb_status(self, reimb_obj):
+    def update_reimb_status(self, reimb_id, status, resolver):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
                              password="pass") as conn:
             with conn.cursor() as cur:
-                cur.execute(f"UPDATE ers_reimbursement SET status = '{reimb_obj.status}', resolved = "
-                            f"'{datetime.datetime.now()}', reimb_resolver = '{reimb_obj.resolver}' WHERE reimb_id = "
-                            f"'{reimb_obj.reimb_id}';")
+                cur.execute(f"UPDATE ers_reimbursement SET status = '{status}', resolved = "
+                            f"'{datetime.datetime.now()}', reimb_resolver = '{resolver}' WHERE reimb_id = "
+                            f"'{reimb_id}';")
                 conn.commit()
-                return f"Reimbursement request {reimb_obj.reimb_id} has been {reimb_obj.status}."
+                return f"Reimbursement request {reimb_id} has been {status}."
 
 
 

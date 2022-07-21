@@ -5,6 +5,8 @@ from model.reimbursement import Reimbursement
 from model.user import User
 from exception.invalid_param import InvalidParamError
 from controller.user_controller import uc
+import json
+import datetime
 
 ec = Blueprint('employee_controller', __name__)
 us = UserService()
@@ -12,44 +14,48 @@ rs = ReimbService()
 
 # As an employee, I want to be able to submit and review my reimbursement requests
 
-@ec.route('/<username>/home')
-def employee_home(username):
-    return us.get_user_info(username)
-
-
-@ec.route('/<username>/submit-reimbursement', methods=['PUT'])
-def submit_reimb(username):
-    json_input = request.get_json()
-    amount = json_input['amount']
-    submitted = json_input['submission_time']
-    type = json_input['type']
-    descrip = json_input['description']
-    receipt = json_input['receipt']
-    author = json_input['username']
-    try:
-        rs.create_reimb(Reimbursement(amount, submitted, type, descrip, receipt, author))
-    except InvalidParamError as e:
-        return{
-            'message': f"{e}"
-        }, 400
 
 @ec.route('/e/reimbursements')
 def get_all_reimbs_e():
-    json_entry = request.get_json()
     if "user" in session:
+        # print("in ec /e/reimbursements:: session ~~ ", session)
+        status = request.args.get('filter-status')
+        filter_type = request.args.get('filter-type')
+        if status == 'all-statuses':
+            status = None
+        if filter_type == 'all-types':
+            filter_type = None
         try:
-            reimbs = rs.get_all_reimbs(session['user']['id'], json_entry['filter_status'], json_entry['filter_type'],
-                              session['user']['role'])
-            to_return = {}
-            for re in reimbs:
-                to_return.update({f"{re.get_id()}": f"{re.to_dict()}"})
+            reimbs = rs.get_all_reimbs(session['user']['id'], status, filter_type, session['user']['role'])
+            to_return = {"reimbs": []}
 
-            print("to_return from ec : ", to_return)
-            return to_return
+            for re in reimbs:
+                to_return["reimbs"].append(re.to_dict())
+
+            # print("to_return from ec : ", to_return)
+            return to_return, 201
         except InvalidParamError as e:
             return {
                 'message': f"{e}"
             }, 400
     else:
-        return redirect(url_for('uc.login'))
+        return {
+            'message': 'must be logged in'
+        }, 401
+
+
+@ec.route('/e/reimbursement', methods=['POST'])
+def submit_reimb():
+    if "user" in session:
+        print("ec.route/e/reimbursements ~~ ", session)
+        time = datetime.datetime.now()
+        json_input = request.get_json()
+        reimb = Reimbursement(json_input['amount'], time, json_input['type'], json_input['description'], None,
+                              session['user']['id'])
+        print(reimb)
+        return rs.create_reimb(reimb), 201
+    else:
+        return {
+             'message': 'must be logged in'
+        }, 401
 

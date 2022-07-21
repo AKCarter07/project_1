@@ -1,7 +1,20 @@
+
 let logoutBtn = document.getElementById('logout');
-logoutBtn.addEventListener('click', () => 
-    {fetch('http://127.0.0.1:8080/logout'),
-    window.location.href = 'index.html'}
+logoutBtn.addEventListener('click', async (e) => 
+    {
+        let result = await fetch('http://127.0.0.1:8080/logout', {
+            'method': 'POST', 
+            'credentials': 'include',
+            'headers':{
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+        e.preventDefault();
+        if (result.status === 201) {
+            window.location.href = "./login.html"
+
+        }
+    }
 )
 
 var status = null;
@@ -70,15 +83,18 @@ async function getRes() {
                 break;
             }
         }
-        
-        console.log(status);
-        console.log(type);
+
         let getReimbs = await fetch(`http://127.0.0.1:8080/fm/reimbursements?filter-status=${status}&filter-type=${type}`, {
                 'credentials': 'include',
                 'method': 'GET'
         })
-        let reimbsJson = await getReimbs.json();
-        addReimbToTable(reimbsJson);
+        if (getReimbs.status === 201) {
+            let reimbsJson = await getReimbs.json();
+            addReimbToTable(reimbsJson);
+        }
+        else if (getReimbs.status === 401) {
+            window.location.href = "./login.html"
+        }
     } catch (err) {
         console.log(err)
     }
@@ -90,10 +106,17 @@ function addReimbToTable(reimbs){
     reimbTable.innerHTML = '';
     for (re of reimbs.reimbs) {
         let row = document.createElement('tr');
-        let idCell = document.createElement('td');
+        let select = document.createElement('td');
+        if (re.status === 'pending'){
+            select.innerHTML = `<input class="checkbox" type="checkbox" name="selected" id="check${re.reimb_id}">`;
+        }
+        else {
+            select.innerHTML = '';
+        }
+            let idCell = document.createElement('td');
         idCell.innerHTML = re.reimb_id;
         let amountCell = document.createElement('td');
-        amountCell.innerHTML = re.amount;
+        amountCell.innerHTML = `\$${re.amount}`;
         let status = document.createElement('td');
         status.innerHTML = re.status;
         let type = document.createElement('td');
@@ -109,10 +132,16 @@ function addReimbToTable(reimbs){
         let resolBy = document.createElement('td');
         resolBy.innerHTML = re.resolver_id;
         let resolOn = document.createElement('td');
-        resolOn.innerHTML = re.date_resolved.slice(0, re.date_resolved.length -7);
+        if (re.date_resolved == 'None') {
+            resolOn.innerHTML = '';
+        }
+        else {
+            resolOn.innerHTML = re.date_resolved.slice(0, re.date_resolved.length -7);
+        }
 
-        row.appendChild(status);
+        row.appendChild(select);
         row.appendChild(idCell);
+        row.appendChild(status);
         row.appendChild(amountCell);
         row.appendChild(type);
         row.appendChild(descrip);
@@ -128,4 +157,75 @@ function addReimbToTable(reimbs){
 }
 
 getRes();
+
+
+
+
+
+function getSelectedReimbs() {
+    let reToUpdate = [];
+    console.log('in get-selected');
+    let reimbTable = document.querySelector('#reimbs-table tbody');
+    for (let i in reimbTable.rows) {
+        try {
+            let reimbId = reimbTable.rows[i].cells[1].textContent;
+            let check = document.getElementById(`check${reimbId}`);
+            let active = check.checked;        
+            // console.log(reimbId);
+            // console.log(check);
+            // console.log(active);
+            if (active){
+                reToUpdate.push(reimbId);
+            }
+        }
+        catch (e) {
+            break;
+        }
+
+    }
+    // console.log(reToUpdate);
+    return reToUpdate;
+}
+
+let approveReimbsBtn = document.getElementById('approve-reimbs');
+approveReimbsBtn.addEventListener('click', async () => {
+    console.log('clicked approve-reimbs');
+    let selected = getSelectedReimbs();
+    let result = await fetch('http://127.0.0.1:8080/fm/reimbursements', {
+            'method': 'PUT', 
+            'credentials': 'include',
+            'headers': {
+                'Content-type': 'application/json'
+            },
+            'body': JSON.stringify({
+                'status': 'approved',
+                'to_update': `${selected}`
+            })
+        })
+    if (result.status === 201){
+        getRes();
+    }
+    
+})
+ 
+let denyReimbsBtn = document.getElementById('deny-reimbs');
+denyReimbsBtn.addEventListener('click', async () => {
+    console.log('clicked deny-reimbs');
+    let selected = getSelectedReimbs();
+    let result = await fetch('http://127.0.0.1:8080/fm/reimbursements', {
+            'method': 'PUT', 
+            'credentials': 'include',
+            'headers': {
+                'Content-type': 'application/json'
+            },
+            'body': JSON.stringify({
+                'status': 'denied',
+                'to_update': `${selected}`
+            })
+        })
+    if (result.status === 201){
+        getRes();
+    }
+    
+})
     

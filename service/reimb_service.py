@@ -21,7 +21,7 @@ class ReimbService():
         return self.rd.get_reimb()
 
     def get_all_reimbs(self, user_id, filter_status, filter_type, role):
-        print("service: user_id = ", user_id, ", filter-status = ", filter_status, " filter type = ", filter_type)
+        # print("service: user_id = ", user_id, ", filter-status = ", filter_status, " filter type = ", filter_type)
         if not user_id and not role == "finance_manager":
             raise InvalidParamError("You must be a finance manager to see all reimbursement requests.")
         return self.rd.get_reimbs(user_id, filter_status, filter_type)
@@ -35,8 +35,8 @@ class ReimbService():
 
 
 # Update - as employee? as finance manager
-    def update_reimb_status(self, reimb_obj):
-        return self.rd.update_reimb_status(reimb_obj)
+    def update_reimb_status(self, reimb_id, status, resolver):
+        return self.rd.update_reimb_status(reimb_id, status, resolver)
 
 # Delete
     def delete_reimb(self, reimb_id):
