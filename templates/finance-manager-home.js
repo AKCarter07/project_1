@@ -100,6 +100,18 @@ async function getRes() {
     }
 }
 
+async function getReceiptImg(receipt){
+    const response = await fetch(receipt)
+    const imageBlob = await response.blob()
+    const reader = new FileReader();
+    reader.readAsDataURL(imageBlob);
+    reader.onloadend = () => {
+        const base64data = reader.result;
+        console.log(base64data);
+  }
+}
+
+
 
 function addReimbToTable(reimbs){
     let reimbTable = document.querySelector('#reimbs-table tbody');
@@ -128,7 +140,8 @@ function addReimbToTable(reimbs){
         let subOn = document.createElement('td');
         subOn.innerHTML = re.date_submitted.slice(0, re.date_submitted.length - 7);
         let receipt = document.createElement('td');
-        receipt.innerHTML = "None";
+
+        receipt.innerHTML = `<img src="{getReceiptImage(re.receipt)}">`
         let resolBy = document.createElement('td');
         resolBy.innerHTML = re.resolver_id;
         let resolOn = document.createElement('td');

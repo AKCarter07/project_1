@@ -2,6 +2,25 @@ let amount = document.getElementById('amount-input');
 let descrip = document.getElementById('descrip-input');
 let reimbSubmitBtn = document.getElementById('reimb-submit-btn');
 let typeBtns = document.querySelectorAll('input[name="type"]');
+let receiptUpload = document.getElementById('receipt')
+
+
+// let handleImageUpload = event => {
+//     let files = event.target.files;
+//     let formData = new FormData();
+//     formData.append('myFile', files[0]);
+
+//     fetch('/saveImage', {
+//         method: 'POST',
+//         body, formData
+//     })
+//     .then(response => response.json())
+//     .then(data => {console.log(data.path)
+//     })
+//     .catch(error => {
+//         console.error(error)
+//     })
+// }
 
 reimbSubmitBtn.addEventListener('click', async (e) => {
     
@@ -14,6 +33,9 @@ reimbSubmitBtn.addEventListener('click', async (e) => {
                 break;
             }
         }
+        // let receipt = handleImageUpload(receiptUpload);
+
+
         e.preventDefault();
 
 
@@ -21,12 +43,13 @@ reimbSubmitBtn.addEventListener('click', async (e) => {
             'credentials': 'include',
             'method': 'POST',
             'headers': {
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             },
             'body': JSON.stringify({
                 'amount': amount.value,
                 'description': descrip.value,
-                'type': selectedType.value
+                'type': selectedType.value,
+                'receipt': receipt.value
             })
         })
         

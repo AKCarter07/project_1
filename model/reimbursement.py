@@ -17,6 +17,7 @@ class Reimbursement:
             'amount': float(self.amount),
             'type': self.type,
             'description': self.descrip,
+            'receipt': self.receipt,
             'submitter_id': self.author,
             'status': self.status,
             'date_submitted': str(self.submitted),

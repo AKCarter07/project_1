@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, redirect, url_for
+from flask import Blueprint, request, session, redirect, url_for, current_app
 from service.user_service import UserService
 from service.reimb_service import ReimbService
 from model.reimbursement import Reimbursement
@@ -7,6 +7,8 @@ from exception.invalid_param import InvalidParamError
 from controller.user_controller import uc
 import json
 import datetime
+from werkzeug.utils import secure_filename
+import os
 
 ec = Blueprint('employee_controller', __name__)
 us = UserService()
@@ -14,6 +16,12 @@ rs = ReimbService()
 
 # As an employee, I want to be able to submit and review my reimbursement requests
 
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @ec.route('/e/reimbursements')
 def get_all_reimbs_e():
@@ -49,10 +57,17 @@ def submit_reimb():
     if "user" in session:
         print("ec.route/e/reimbursements ~~ ", session)
         time = datetime.datetime.now()
-        json_input = request.get_json()
-        reimb = Reimbursement(json_input['amount'], time, json_input['type'], json_input['description'], None,
-                              session['user']['id'])
-        print(reimb)
+        amount= request.form.get('amount')
+        type = request.form.get('type')
+        descrip = request.form.get('description')
+        print(amount)
+        receipt = request.files['receipt']
+        receiptExt = receipt.filename.rsplit('.', 1)[1].lower()
+        filename = f'{time}{type}{session["user"]["id"]}'
+        filename = filename.replace("-", "").replace(':', '').replace(' ', '').replace('.', '') + '.' + receiptExt
+        print(filename)
+        receipt.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        reimb = Reimbursement(amount, time, type, descrip, filename, session['user']['id'])
         return rs.create_reimb(reimb), 201
     else:
         return {

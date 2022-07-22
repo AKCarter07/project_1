@@ -1,9 +1,10 @@
-from flask import Blueprint, request, session, render_template, redirect, url_for
+from flask import Blueprint, request, session, render_template, redirect, url_for, current_app, send_from_directory
 from service.reimb_service import ReimbService
 from model.reimbursement import Reimbursement
 from exception.invalid_param import InvalidParamError
 import json
 from flask_cors import CORS
+
 
 fmc = Blueprint('finance_manager_controller', __name__)
 rs = ReimbService()
@@ -59,3 +60,7 @@ def approve_reimbs():
            'message': 'must be logged in'
        }, 401
 
+
+@fmc.route('/get-receipt/<receipt>')
+def get_receipt(receipt):
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], receipt)
