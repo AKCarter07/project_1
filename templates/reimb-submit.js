@@ -15,8 +15,7 @@ let receiptUpload = document.getElementById('receipt')
 //         body, formData
 //     })
 //     .then(response => response.json())
-//     .then(data => {console.log(data.path)
-//     })
+//     .then(data => {console.log(data.path)})
 //     .catch(error => {
 //         console.error(error)
 //     })

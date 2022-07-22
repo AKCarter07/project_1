@@ -100,14 +100,14 @@ async function getRes() {
     }
 }
 
-async function getReceiptImg(receipt){
-    const response = await fetch(receipt)
+async function getReceiptImg(receiptUrl){
+    const response = await fetch(receiptUrl)
     const imageBlob = await response.blob()
     const reader = new FileReader();
     reader.readAsDataURL(imageBlob);
     reader.onloadend = () => {
         const base64data = reader.result;
-        console.log(base64data);
+        //console.log(base64data);
   }
 }
 
@@ -125,7 +125,7 @@ function addReimbToTable(reimbs){
         else {
             select.innerHTML = '';
         }
-            let idCell = document.createElement('td');
+        let idCell = document.createElement('td');
         idCell.innerHTML = re.reimb_id;
         let amountCell = document.createElement('td');
         amountCell.innerHTML = `\$${re.amount}`;
@@ -140,8 +140,14 @@ function addReimbToTable(reimbs){
         let subOn = document.createElement('td');
         subOn.innerHTML = re.date_submitted.slice(0, re.date_submitted.length - 7);
         let receipt = document.createElement('td');
-
-        receipt.innerHTML = `<img src="{getReceiptImage(re.receipt)}">`
+        //let exists = getReceiptImg(re.receipt);
+        if (re.receipt != "None") {
+            receipt.innerHTML = `<button class="button" id="${re.receipt}">receipt</button>`;
+        }
+        else {
+            receipt.innerHTML = '';
+        }
+    
         let resolBy = document.createElement('td');
         resolBy.innerHTML = re.resolver_id;
         let resolOn = document.createElement('td');

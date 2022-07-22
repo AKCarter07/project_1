@@ -61,12 +61,18 @@ def submit_reimb():
         type = request.form.get('type')
         descrip = request.form.get('description')
         print(amount)
-        receipt = request.files['receipt']
-        receiptExt = receipt.filename.rsplit('.', 1)[1].lower()
-        filename = f'{time}{type}{session["user"]["id"]}'
-        filename = filename.replace("-", "").replace(':', '').replace(' ', '').replace('.', '') + '.' + receiptExt
-        print(filename)
-        receipt.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        print("form: ", request.form.keys())
+        print("files: ", request.files)
+        print(request.args.to_dict())
+        if 'receipt' in request.files.keys():
+            receipt = request.files['receipt']
+            receiptExt = receipt.filename.rsplit('.', 1)[1].lower()
+            filename = f'{time}{type}{session["user"]["id"]}'
+            filename = filename.replace("-", "").replace(':', '').replace(' ', '').replace('.', '') + '.' + receiptExt
+            print(filename)
+            receipt.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        else:
+            filename = None
         reimb = Reimbursement(amount, time, type, descrip, filename, session['user']['id'])
         return rs.create_reimb(reimb), 201
     else:
