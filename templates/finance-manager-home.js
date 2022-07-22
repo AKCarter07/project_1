@@ -133,7 +133,7 @@ function addReimbToTable(reimbs){
         subOn.innerHTML = re.date_submitted.slice(0, re.date_submitted.length - 7);
         let receipt = document.createElement('td');
         if (re.receipt != "None") {
-            receipt.innerHTML = `<button class="button" name ="receipt-btn" id="${re.receipt}">receipt ${re.receipt}</button>`;
+            receipt.innerHTML = `<button class="button" name ="receipt-btn" id="${re.receipt}">receipt</button>`;
             console.log(re.receipt)
             receipt.addEventListener('click', (e) => {
                 modal.classList.add('is-active')
