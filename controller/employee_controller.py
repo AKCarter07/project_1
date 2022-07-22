@@ -1,4 +1,5 @@
-from flask import Blueprint, request, session, redirect, url_for, current_app
+from flask import Blueprint, request, session, redirect, url_for, current_app, jsonify
+from flask_cors import cross_origin
 from service.user_service import UserService
 from service.reimb_service import ReimbService
 from model.reimbursement import Reimbursement
@@ -73,8 +74,15 @@ def submit_reimb():
             receipt.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         else:
             filename = None
+        print(amount, ", ", time, ", ", type, ", ", descrip, ", ", filename, ", ", session['user']['id'])
         reimb = Reimbursement(amount, time, type, descrip, filename, session['user']['id'])
-        return rs.create_reimb(reimb), 201
+        print(reimb.to_dict())
+        rs.create_reimb(reimb)
+        response = jsonify(mesage="reimbursement submitted")
+        print(response.headers)
+        return {
+            'message': 'worked'
+        }, 201
     else:
         return {
              'message': 'must be logged in'

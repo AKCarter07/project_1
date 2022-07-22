@@ -16,9 +16,12 @@ logoutBtn.addEventListener('click', async (e) =>
         }
     }
 )
-
+const modalBg = document.querySelector('.modal-background');
+const modal = document.querySelector('.modal');
+const receiptImg = document.getElementById('receipt-img');
 var status = null;
 var type = null;
+
 
 const statusMenu = document.querySelector('#status-ddown');
 let statusBtn = document.getElementById('status-ddown');
@@ -100,17 +103,6 @@ async function getRes() {
     }
 }
 
-async function getReceiptImg(receiptUrl){
-    const response = await fetch(receiptUrl)
-    const imageBlob = await response.blob()
-    const reader = new FileReader();
-    reader.readAsDataURL(imageBlob);
-    reader.onloadend = () => {
-        const base64data = reader.result;
-        //console.log(base64data);
-  }
-}
-
 
 
 function addReimbToTable(reimbs){
@@ -140,9 +132,19 @@ function addReimbToTable(reimbs){
         let subOn = document.createElement('td');
         subOn.innerHTML = re.date_submitted.slice(0, re.date_submitted.length - 7);
         let receipt = document.createElement('td');
-        //let exists = getReceiptImg(re.receipt);
         if (re.receipt != "None") {
-            receipt.innerHTML = `<button class="button" id="${re.receipt}">receipt</button>`;
+            receipt.innerHTML = `<button class="button" name ="receipt-btn" id="${re.receipt}">receipt ${re.receipt}</button>`;
+            console.log(re.receipt)
+            receipt.addEventListener('click', (e) => {
+                modal.classList.add('is-active')
+                fetch(`http://127.0.0.1:8080/get-receipt/${e.target.id}`)
+                    .then(response => response.blob())
+                    .then(imageBlob => {
+                        const imgObjURL = URL.createObjectURL(imageBlob);
+                        console.log(imgObjURL);
+                        receiptImg.src = imgObjURL
+                    })
+            })
         }
         else {
             receipt.innerHTML = '';
@@ -247,4 +249,9 @@ denyReimbsBtn.addEventListener('click', async () => {
     }
     
 })
-    
+
+modalBg.addEventListener('click', () => {
+    modal.classList.remove('is-active')
+    receiptImg.src = '';
+ })
+

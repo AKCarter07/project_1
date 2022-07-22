@@ -32,8 +32,15 @@ reimbSubmitBtn.addEventListener('click', async (e) => {
                 break;
             }
         }
-        // let receipt = handleImageUpload(receiptUpload);
-
+        let receipt = document.getElementById('receipt');
+        let formData = new FormData();
+        formData.append('amount', amount.value);
+        formData.append('description', descrip.value);
+        formData.append('type', selectedType.value);
+        formData.append('receipt', receipt.files[0]);
+        console.log(amount.value);
+        console.log(descrip.value);
+        console.log(selectedType.value);
 
         e.preventDefault();
 
@@ -41,15 +48,16 @@ reimbSubmitBtn.addEventListener('click', async (e) => {
         let result = await fetch('http://127.0.0.1:8080/e/reimbursement', {
             'credentials': 'include',
             'method': 'POST',
-            'headers': {
-                'Content-Type': 'multipart/form-data'
-            },
-            'body': JSON.stringify({
-                'amount': amount.value,
-                'description': descrip.value,
-                'type': selectedType.value,
-                'receipt': receipt.value
-            })
+            // 'headers': {
+            //     'Content-Type': 'multipart/form-data'
+            // },
+            'body': formData
+            // 'form': JSON.stringify({
+            //     'amount': amount.value,
+            //     'description': descrip.value,
+            //     'type': selectedType.value,
+            // }),
+            // 'files': receipt
         })
         
         if (result.status == 201) {

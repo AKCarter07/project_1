@@ -17,6 +17,9 @@ logoutBtn.addEventListener('click', async (e) =>
     }
 )
 
+const modalBg = document.querySelector('.modal-background');
+const modal = document.querySelector('.modal');
+const receiptImg = document.getElementById('receipt-img');
 var status = null;
 var type = null;
 
@@ -122,7 +125,24 @@ function addReimbToTable(reimbs){
         let subOn = document.createElement('td');
         subOn.innerHTML = re.date_submitted.slice(0, re.date_submitted.length - 7);
         let receipt = document.createElement('td');
-        receipt.innerHTML = "None";
+        if (re.receipt != "None") {
+            receipt.innerHTML = `<button class="button" name ="receipt-btn" id="${re.receipt}">receipt ${re.receipt}</button>`;
+            console.log(re.receipt)
+            receipt.addEventListener('click', (e) => {
+                modal.classList.add('is-active')
+                fetch(`http://127.0.0.1:8080/get-receipt/${e.target.id}`)
+                    .then(response => response.blob())
+                    .then(imageBlob => {
+                        const imgObjURL = URL.createObjectURL(imageBlob);
+                        console.log(imgObjURL);
+                        receiptImg.src = imgObjURL
+                    })
+            })
+        }
+        else {
+            receipt.innerHTML = '';
+        }
+    
         let resolBy = document.createElement('td');
         resolBy.innerHTML = re.resolver_id;
         let resolOn = document.createElement('td');
@@ -151,3 +171,9 @@ function addReimbToTable(reimbs){
 
 getRes();
     
+
+modalBg.addEventListener('click', () => {
+    modal.classList.remove('is-active')
+    receiptImg.src = '';
+ })
+

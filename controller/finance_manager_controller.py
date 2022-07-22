@@ -63,4 +63,5 @@ def approve_reimbs():
 
 @fmc.route('/get-receipt/<receipt>')
 def get_receipt(receipt):
-    return send_from_directory(current_app.config["UPLOAD_FOLDER"], receipt)
+    print(receipt)
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], receipt, as_attachment=True)

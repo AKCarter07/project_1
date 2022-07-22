@@ -14,7 +14,9 @@ if __name__ == '__main__':
     app.secret_key = "hello"
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    CORS(app, supports_credentials=True)
+    app.config['CORS_SUPPORTS_CREDENTIALS'] = True
+    app.config['CORS_ORIGINS'] = ['http://127.0.0.1:5502']
+    CORS(app)
     Session(app)
     app.register_blueprint(uc)
     app.register_blueprint(ec)
