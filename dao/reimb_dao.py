@@ -10,7 +10,7 @@ class ReimbDao:
 # Create
     def create_reimb(self, reimb_obj):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
-                             password="pass") as conn:
+                             password="password") as conn:
             with conn.cursor() as cur:
                 cur.execute(f"INSERT INTO ers_reimbursement (reimb_amount, submitted, reimb_type, description, "
                             f"receipt, reimb_author, status) VALUES ('{reimb_obj.amount}', '{reimb_obj.submitted}', "
@@ -22,7 +22,7 @@ class ReimbDao:
 # Read
     def get_reimb(self, reimb_id):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
-                             password="pass") as conn:
+                             password="password") as conn:
             with conn.cursor() as cur:
                 cur.execute(f"SELECT * FROM ers_reimbursement WHERE reimb_id = '{reimb_id}';")
                 for line in cur:
@@ -51,7 +51,7 @@ class ReimbDao:
                 call = call + f"reimb_type = '{filter_type}'"
         call = call + " ORDER BY status DESC, submitted;"
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
-                             password="pass") as conn:
+                             password="password") as conn:
             with conn.cursor() as cur:
                 cur.execute(call)
                 for line in cur:
@@ -69,7 +69,7 @@ class ReimbDao:
 # Update
     def update_reimb_status(self, reimb_id, status, resolver):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
-                             password="pass") as conn:
+                             password="password") as conn:
             with conn.cursor() as cur:
                 cur.execute(f"UPDATE ers_reimbursement SET status = '{status}', resolved = "
                             f"'{datetime.datetime.now()}', reimb_resolver = '{resolver}' WHERE reimb_id = "
@@ -82,7 +82,7 @@ class ReimbDao:
 # Delete
     def delete_reimb(self, reimb_id):
         with psycopg.connect(host="localhost", port="5432", dbname="postgres", user="postgres",
-                             password="pass") as conn:
+                             password="password") as conn:
             with conn.cursor() as cur:
                 cur.execute(f"DELETE FROM ers_reimbursement WHERE reimb_id = '{reimb_id}';")
                 conn.commit()
