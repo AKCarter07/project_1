@@ -8,6 +8,98 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Home</h1>
+    <nav class="navbar HAS-SHADOW IS-WHITE">
+        <!--logo / brand -->
+        <div class="navbar-brand">
+            <a class="navbar-item">
+                <img src="/Ancalagon2dragonslogo.png" alt="site-logo" style="max-height: 200px" class="py-2">
+            </a>
+
+            <a class="navbar-burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="nav-links">
+            <div class="navbar-end">
+                <a class="navbar-item" href = "login.html">Employees</a>
+                <a class="navbar-item" href = "login.html">Finance Managers</a>
+        </div>
+    </nav>
+
+    
+    <!--product info-->
+    <section class="section">
+        <div class="container">
+            <div class="columns is-vcentered is-multiline">
+                <!--if we don't add "is-3" to any, columns default to equal size-->
+                <div class="column is-6-tablet is-3-desktop">
+                    <h1 class="is-size-3-mobile is-size-1-desktop title">Employee</h1>
+                    <h2 class="is-size-3-mobile is-size-2 subtitle">Receipts</h2>
+                    <p>This is the place where your reimbursements become a reality. Make sure you submit all your receipts on time so you can be reimbursed fast. Click on the Employees link above or Submit button below to get started.</p>
+                    <div class="has-text-centered">
+                        <button class="button mt-5 is-primary is-rounded" id="submit">Submit</button>
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-5-desktop has-text-centered">
+                    <img src="/distorted-buildings.png" alt="docker distorted-buildings image" class="px-6">
+                </div>
+                
+                <div class="column is-6-tablet is-3-desktop">
+                    <h1 class="is-size-3-mobile is-size-1-desktop title">Finance Managers</h1>
+                    <h2 class="is-size-3-mobile is-size-2 subtitle">Portal</h2>
+                    <p>Easily view and track employee reimbursement requests, generate reports, and make the necessary changes.</p>
+                    <div class="has-text-centered">
+                        <button class="button mt-5 is-primary is-rounded" id="enter">Enter</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    
+    <!--Login-->
+    <!-- <section class="section">
+        <div class="container">
+            <div class="column is-half is-variable box">
+                <div class="submission">
+                    
+                    
+                        <div class="field">
+                            <label for="username" class="label">Username</label>
+                            <div class="control">
+                                <input type="text" id="username" class="input">
+                            </div>
+                            
+                        </div>
+                        <div class="field">
+                            <label for="password" class="label">Password</label>
+                            <div class="control">
+                                <input type="text" id="password" class="input">
+                            </div>
+                        </div>
+                        <div class="has-text-centered">
+                            <button class="button is-rounded is-link" id="login-btn">Submit</button>
+                        </div>
+                        
+                    
+                    <div class="section">
+                        <div id="reg-error-msgs"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p><a href="reimb-approve.html">Approve-Mint</a></p>
+    <p><a href="reimb-submit.html">Submit Mints</a></p> -->
+
+
+
+    <script src="home.js"></script>
+    <!--<script src="login.js"></script> -->
 </body>
 </html>
