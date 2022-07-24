@@ -175,5 +175,7 @@ getRes();
 modalBg.addEventListener('click', () => {
     modal.classList.remove('is-active')
     receiptImg.src = '';
- })
+ });
+ 
 
+ 
