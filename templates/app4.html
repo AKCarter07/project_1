@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login - Free Bulma template</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet"> -->
+        <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet">
+        <!-- Bulma Version 0.9.0-->
+        <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/login.css">
+    </head>
+
+    <body>
+        <section class="hero is-success is-fullheight">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <div class="column is-4 is-offset-4">
+                        <h3 class="title has-text-black">Submit</h3>
+                        <hr class="login-hr">
+                        <p class="subtitle has-text-black">Please fill out completeley to proceed.</p>
+                        <div class="box">
+                            <figure class="avatar">
+                                <img src="Ancalagon22dragonslogo.png">
+                            </figure>
+                            <form>
+                                <div class="field" id="reimb">
+                                    <div class="control">                                    
+                                        <label for="amount"><b>Amount: </b></label>
+                                        <input class="input is-large" id="amount-input" type="number" step="any" autofocus="">                                    
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">                                    
+                                        <input class="input is-large" autofocus="">
+                                            
+                                            Select Type:
+                                            <input type="radio" id="lodging" name="type" value="lodging">
+                                            <label for="lodging">Lodging</label>
+                                            <input type="radio" id="travel" name="type" value="travel">
+                                            <label for="travel">Travel</label>
+                                            <input type="radio" id="food" name="type" value="food">
+                                            <label for="food">Food</label>
+                                            <input type="radio" id="other" name="type" value="other" checked>
+                                            <label for="other">Other</label>                     
+                                    </div>
+                                </div>
+                                <b>Select Type:</b>
+                                <div class="container" style="margin-top: 20px;">
+                                    <div class="buttons is-centered">
+                                        <button class="button">Lodging</button>
+                                        <button class="button">Travel</button>
+                                        <button class="button">Food</button>
+                                        <button class="button is-link is-selected">Other</button>
+                                    </div>
+                                <p></p>
+                                <p></p>
+                                
+                                </div>
+                                <button class="button is-block is-info is-large is-fullwidth" id="login-btn">Submit <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                        <p class="has-text-grey">
+                            <a href="../">Sign Up</a> &nbsp;·&nbsp;
+                            <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                            <a href="../">Need Help?</a>
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <!-- modal -->
+                        <div class="modal">
+                            <div class="modal-background">
+                                <div class="modal-content has-background-white py-5 px-5 text-is-danger">
+                                    <h3 class="title mb-6 has-text-centered is-danger">Error</h3>
+                                    <div class = "has-text-centered" id="reg-error-msgs"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <script async type="text/javascript" src="../js/bulma.js"></script>
+        <!-- <script src="login.js"></script>  -->
+
+
+        <p><a href="employee-home.html">employee home</a></p>
+        
+        <script src="reimb-submit.js"></script>
+    </body>
+
+</html>
